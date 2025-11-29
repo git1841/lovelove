@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,100 +11,46 @@
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-family: 'Arial', sans-serif;
-            padding: 20px;
         }
+
         .message-card {
             background: white;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             padding: 40px;
             text-align: center;
-            max-width: 800px;
-            margin: 0 auto 30px;
+            max-width: 500px;
+            width: 100%;
         }
+
         .name {
             color: #2c3e50;
             font-size: 2.5rem;
             font-weight: bold;
             margin-bottom: 20px;
         }
+
         .love {
             color: #e74c3c;
             font-size: 1.8rem;
             font-style: italic;
-            margin: 20px 0;
+            margin-top: 15px;
         }
+
         .heart {
             color: #e74c3c;
             font-size: 2rem;
             margin: 0 10px;
         }
-        .response-section {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px dashed #ddd;
-        }
-        .btn-send {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            border: none;
-            color: white;
-            padding: 12px 30px;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-        }
-        .btn-send:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
-        }
-        .form-control {
-            border-radius: 15px;
-            padding: 15px;
-            border: 2px solid #e9ecef;
-            font-size: 1rem;
-        }
-        .form-control:focus {
-            border-color: #e74c3c;
-            box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.25);
-        }
-        .messages-container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            padding: 30px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .message-item {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-left: 4px solid #e74c3c;
-        }
-        .message-text {
-            font-size: 1.1rem;
-            color: #2c3e50;
-            margin: 0;
-        }
-        .message-time {
-            font-size: 0.8rem;
-            color: #6c757d;
-            text-align: right;
-            margin-top: 5px;
-        }
-        .no-messages {
-            text-align: center;
-            color: #6c757d;
-            font-style: italic;
-            padding: 20px;
-        }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <!-- Message principal -->
         <div class="message-card">
             <div class="name">Je m'appelle "Second"</div>
             <div class="d-flex align-items-center justify-content-center">
@@ -111,105 +58,11 @@
                 <span class="love">Mon amour est "Elvia"</span>
                 <span class="heart">❤</span>
             </div>
-
-            <!-- Section réponse -->
-            <div class="response-section">
-                <h4 class="mb-4" style="color: #2c3e50;">Laissez un message</h4>
-                
-                <form id="responseForm">
-                    <div class="mb-3">
-                        <textarea 
-                            class="form-control" 
-                            id="responseText" 
-                            rows="3" 
-                            placeholder="Écrivez votre message ici..."
-                            required
-                        ></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-send">
-                        📨 Envoyer
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Section des messages -->
-        <div class="messages-container">
-            <h4 class="mb-4 text-center" style="color: #2c3e50;">Messages des visiteurs</h4>
-            <div id="messagesList">
-                <!-- Les messages seront affichés ici -->
-            </div>
         </div>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <script>
-        // Stockage des messages dans le localStorage
-        let messages = JSON.parse(localStorage.getItem('loveMessages')) || [];
-
-        // Fonction pour afficher les messages
-        function displayMessages() {
-            const messagesList = document.getElementById('messagesList');
-            
-            if (messages.length === 0) {
-                messagesList.innerHTML = '<div class="no-messages">Aucun message pour le moment. Soyez le premier à écrire !</div>';
-                return;
-            }
-
-            // Afficher les messages du plus récent au plus ancien
-            messagesList.innerHTML = messages.reverse().map((message, index) => `
-                <div class="message-item">
-                    <p class="message-text">${message.text}</p>
-                    <div class="message-time">${message.time}</div>
-                </div>
-            `).join('');
-        }
-
-        // Fonction pour ajouter un message
-        function addMessage(text) {
-            const newMessage = {
-                text: text,
-                time: new Date().toLocaleString('fr-FR')
-            };
-            
-            messages.push(newMessage);
-            localStorage.setItem('loveMessages', JSON.stringify(messages));
-            displayMessages();
-        }
-
-        // Gestion de l'envoi du formulaire
-        document.getElementById('responseForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const responseText = document.getElementById('responseText').value.trim();
-            
-            if (responseText) {
-                addMessage(responseText);
-                
-                // Réinitialiser le formulaire
-                document.getElementById('responseForm').reset();
-                
-                // Petit effet de confirmation
-                const btn = document.querySelector('.btn-send');
-                const originalText = btn.innerHTML;
-                btn.innerHTML = 'Envoyé !';
-                btn.disabled = true;
-                
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                    btn.disabled = false;
-                }, 2000);
-            }
-        });
-
-        // Afficher les messages au chargement de la page
-        displayMessages();
-
-        // Optionnel : Rafraîchir automatiquement les messages toutes les 5 secondes
-        setInterval(displayMessages, 5000);
-    </script>
 </body>
+
 </html>
